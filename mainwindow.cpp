@@ -2,7 +2,8 @@
 #include "ui_mainwindow.h"
 #include "cprojectlistitem.h"
 
-#include<QThread>
+#include <QThread>
+#include <QWebEnginePage>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -21,8 +22,21 @@ void MainWindow::on_pushButton_2_clicked()
     ui->dateEdit->setDate(QDate::currentDate());
 }
 
+void htmlReader(QString html)
+{
+    qDebug() << "HTML size: " << html.size();
+    qDebug() << "HTML:\n" << html;
+}
+
 void MainWindow::on_pushButton_clicked()
 {
+    QString url("http://http://www.play-hookey.com/");
+    QWebEnginePage page;
+    page.load(QUrl(url));
+
+    qDebug() << "Page content size: " << page.contentsSize().toSize();
+    page.toHtml(htmlReader);
+
     static ulong listIndex = 1;
 
     QTime time;
