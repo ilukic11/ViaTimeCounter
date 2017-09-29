@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QWebEnginePage>
 
 namespace Ui {
 class MainWindow;
@@ -20,8 +21,15 @@ private slots:
 
     void on_pushButton_clicked();
 
+protected:
+    static void htmlReader(QString html);
+
+public slots:
+    void pageLoadFinished(bool b);
+
 private:
     Ui::MainWindow *ui;
+    QWebEnginePage m_page;
 };
 
 #endif // MAINWINDOW_H

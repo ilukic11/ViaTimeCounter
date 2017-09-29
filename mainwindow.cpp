@@ -7,7 +7,8 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_page()
 {
     ui->setupUi(this);
 }
@@ -22,20 +23,27 @@ void MainWindow::on_pushButton_2_clicked()
     ui->dateEdit->setDate(QDate::currentDate());
 }
 
-void htmlReader(QString html)
+void MainWindow::htmlReader(QString html)
 {
     qDebug() << "HTML size: " << html.size();
     qDebug() << "HTML:\n" << html;
 }
 
+void MainWindow::pageLoadFinished(bool b)
+{
+    qDebug() << "Page content size: " << m_page.contentsSize().toSize();
+    m_page.toHtml(MainWindow::htmlReader);
+}
+
+// checkout:
+// https://stackoverflow.com/questions/36680604/qwebenginepage-tohtml-returns-an-empty-string
 void MainWindow::on_pushButton_clicked()
 {
-    QString url("http://http://www.play-hookey.com/");
-    QWebEnginePage page;
-    page.load(QUrl(url));
+    QString url("http://help.websiteos.com/websiteos/example_of_a_simple_html_page.htm");
 
-    qDebug() << "Page content size: " << page.contentsSize().toSize();
-    page.toHtml(htmlReader);
+    connect(m_page, SIGNAL(loadFinished(bool)), this, SLOT(pageLoadFinished(bool)));
+
+    page.load(QUrl(url));
 
     static ulong listIndex = 1;
 
