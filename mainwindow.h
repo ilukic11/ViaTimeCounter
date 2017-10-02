@@ -22,7 +22,7 @@ private slots:
     void on_pushButton_clicked();
 
 protected:
-    static void htmlReader(QString html);
+    void htmlReader(QString html);
 
 public slots:
     void pageLoadFinished(bool b);

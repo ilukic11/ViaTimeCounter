@@ -23,27 +23,43 @@ void MainWindow::on_pushButton_2_clicked()
     ui->dateEdit->setDate(QDate::currentDate());
 }
 
+
+// to parse HTML list, check:
+// http://www.qtcentre.org/threads/65044-Get-Html-element-value-with-QWebEngine
 void MainWindow::htmlReader(QString html)
 {
     qDebug() << "HTML size: " << html.size();
     qDebug() << "HTML:\n" << html;
+
+    auto children = m_page.children();
+    for (auto child : children)
+    {
+        qDebug() << "--------------------\nChild found:" << child;
+        qDebug() << "obj Info: ";
+        child->dumpObjectInfo();
+        for (auto propertyName : child->dynamicPropertyNames())
+        {
+            qDebug() << "+++ Property name: " << propertyName.toStdString().c_str();
+        }
+    }
 }
 
 void MainWindow::pageLoadFinished(bool b)
 {
     qDebug() << "Page content size: " << m_page.contentsSize().toSize();
-    m_page.toHtml(MainWindow::htmlReader);
+    m_page.toHtml(invoke(this, &MainWindow::htmlReader));
 }
 
 // checkout:
 // https://stackoverflow.com/questions/36680604/qwebenginepage-tohtml-returns-an-empty-string
 void MainWindow::on_pushButton_clicked()
 {
-    QString url("http://help.websiteos.com/websiteos/example_of_a_simple_html_page.htm");
+    //    QString url("http://help.websiteos.com/websiteos/example_of_a_simple_html_page.htm");
+    QString url("http://tctmweb/viatimroot/default.aspx");
 
-    connect(m_page, SIGNAL(loadFinished(bool)), this, SLOT(pageLoadFinished(bool)));
+    connect(&m_page, SIGNAL(loadFinished(bool)), this, SLOT(pageLoadFinished(bool)));
 
-    page.load(QUrl(url));
+    m_page.load(QUrl(url));
 
     static ulong listIndex = 1;
 
