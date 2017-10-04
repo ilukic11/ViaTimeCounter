@@ -24,6 +24,9 @@ private slots:
 protected:
     void htmlReader(QString html);
 
+    void jsCallback(const QVariant& v);
+
+
 public slots:
     void pageLoadFinished(bool b);
 

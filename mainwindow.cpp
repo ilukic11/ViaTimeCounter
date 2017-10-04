@@ -5,6 +5,27 @@
 #include <QThread>
 #include <QWebEnginePage>
 
+// ----------------------
+// check:
+// https://github.com/morphis/qtwebengine-snapshots/blob/master/examples/webenginewidgets/fancybrowser/mainwindow.cpp
+template<typename Arg, typename R, typename C>
+struct InvokeWrapper {
+    R *receiver;
+    void (C::*memberFun)(Arg);
+    void operator()(Arg result) {
+        (receiver->*memberFun)(result);
+    }
+};
+
+template<typename Arg, typename R, typename C>
+InvokeWrapper<Arg, R, C> invoke(R *receiver, void (C::*memberFun)(Arg))
+{
+    InvokeWrapper<Arg, R, C> wrapper = {receiver, memberFun};
+    return wrapper;
+}
+// ----------------------
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -24,12 +45,20 @@ void MainWindow::on_pushButton_2_clicked()
 }
 
 
+void MainWindow::jsCallback(const QVariant& v)
+{
+    qDebug() << "JS result:";
+    qDebug() << v.toString();
+}
+
 // to parse HTML list, check:
 // http://www.qtcentre.org/threads/65044-Get-Html-element-value-with-QWebEngine
 void MainWindow::htmlReader(QString html)
 {
     qDebug() << "HTML size: " << html.size();
-    qDebug() << "HTML:\n" << html;
+//    qDebug() << "HTML:\n" << html;
+
+    m_page.runJavaScript("document.title", invoke(this, &MainWindow::jsCallback));
 
     auto children = m_page.children();
     for (auto child : children)
