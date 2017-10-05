@@ -51,14 +51,32 @@ void MainWindow::jsCallback(const QVariant& v)
     qDebug() << v.toString();
 }
 
+// ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstProjects
+QString jsFunction =    "function myFunction()"
+                        "{"
+                        "var row = document.getElementById(\"ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstProjects\");"
+                        "if (row != null)"
+                        "{"
+                        "   var cells = row.getElementsByTagName('option');"
+                        "}"
+                        "else"
+                        "{"
+                        "   return 'NullPtr!';"
+                        "}"
+                        "return cells[0].innerText;"
+                        "}"
+                        ""
+                        "myFunction();"
+                        ;
+
 // to parse HTML list, check:
 // http://www.qtcentre.org/threads/65044-Get-Html-element-value-with-QWebEngine
 void MainWindow::htmlReader(QString html)
 {
-    qDebug() << "HTML size: " << html.size();
-//    qDebug() << "HTML:\n" << html;
+    qDebug() << "---------------------\nHTML size: " << html.size();
+    qDebug() << "HTML:\n" << html << "\n--------------------------------";
 
-    m_page.runJavaScript("document.title", invoke(this, &MainWindow::jsCallback));
+    m_page.runJavaScript(jsFunction, invoke(this, &MainWindow::jsCallback));
 
     auto children = m_page.children();
     for (auto child : children)
