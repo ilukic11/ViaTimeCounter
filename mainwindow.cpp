@@ -4,6 +4,7 @@
 
 #include <QThread>
 #include <QWebEnginePage>
+#include <QAuthenticator>
 
 // ----------------------
 // check:
@@ -69,6 +70,9 @@ QString jsFunction =    "function myFunction()"
                         "myFunction();"
                         ;
 
+//QString jsFunction =    "document.title"
+//                        ;
+
 // to parse HTML list, check:
 // http://www.qtcentre.org/threads/65044-Get-Html-element-value-with-QWebEngine
 void MainWindow::htmlReader(QString html)
@@ -97,14 +101,23 @@ void MainWindow::pageLoadFinished(bool b)
     m_page.toHtml(invoke(this, &MainWindow::htmlReader));
 }
 
+void MainWindow::slotAuthentication(const QUrl &requestUrl, QAuthenticator *authenticator)
+{
+    authenticator->setUser("ilukic");
+    authenticator->setPassword("NEED_TO_SET_THIS_RIGHT");
+}
+
 // checkout:
 // https://stackoverflow.com/questions/36680604/qwebenginepage-tohtml-returns-an-empty-string
 void MainWindow::on_pushButton_clicked()
 {
     //    QString url("http://help.websiteos.com/websiteos/example_of_a_simple_html_page.htm");
-    QString url("http://tctmweb/viatimroot/default.aspx");
+//    QString url("http://tctmweb/viatimroot/default.aspx");
 
+    QString url("file:///home/ilukic/projects/web/tctmweb/viatimroot/default.aspx.html");
     connect(&m_page, SIGNAL(loadFinished(bool)), this, SLOT(pageLoadFinished(bool)));
+    // authentication purposes
+    connect(&m_page, SIGNAL(authenticationRequired(QUrl,QAuthenticator*)), this, SLOT(slotAuthentication(QUrl,QAuthenticator*)));
 
     m_page.load(QUrl(url));
 

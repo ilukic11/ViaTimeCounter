@@ -30,6 +30,8 @@ protected:
 public slots:
     void pageLoadFinished(bool b);
 
+    void slotAuthentication(const QUrl &requestUrl, QAuthenticator *authenticator);
+
 private:
     Ui::MainWindow *ui;
     QWebEnginePage m_page;
