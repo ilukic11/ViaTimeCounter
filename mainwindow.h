@@ -24,7 +24,15 @@ private slots:
 protected:
     void htmlReader(QString html);
 
-    void jsCallback(const QVariant& v);
+    static QString generateJsFunction(const QString & element);
+
+    // callback methods, later on to be merged into one
+    // and pass caller element to be able to determine
+    // the target element for update
+    void jsCallbackCostlist(const QVariant &v);
+    void jsCallbackProject(const QVariant &v);
+    void jsCallbackSubProject(const QVariant &v);
+    void jsCallbackActivity(const QVariant &v);
 
 
 public slots:
@@ -35,6 +43,10 @@ public slots:
 private:
     Ui::MainWindow *ui;
     QWebEnginePage m_page;
+
+    static const QMap<QString, QString> s_lists;
+    static QString s_username;
+    static QString s_password;
 };
 
 #endif // MAINWINDOW_H

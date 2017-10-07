@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>401</width>
-    <height>815</height>
+    <height>868</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,8 +32,8 @@
    <widget class="QPlainTextEdit" name="plainTextEdit">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>680</y>
+      <x>10</x>
+      <y>730</y>
       <width>104</width>
       <height>70</height>
      </rect>
@@ -42,8 +42,8 @@
    <widget class="QTimeEdit" name="timeEdit">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>640</y>
+      <x>130</x>
+      <y>700</y>
       <width>118</width>
       <height>23</height>
      </rect>
@@ -52,27 +52,48 @@
    <widget class="QDateEdit" name="dateEdit">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>640</y>
+      <x>10</x>
+      <y>700</y>
       <width>110</width>
       <height>23</height>
      </rect>
     </property>
    </widget>
-   <widget class="QComboBox" name="comboBox">
+   <widget class="QComboBox" name="m_projectsCombo">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>560</y>
-      <width>79</width>
+      <y>660</y>
+      <width>110</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>100</height>
+     </size>
+    </property>
+    <property name="statusTip">
+     <string>Projects</string>
+    </property>
+    <property name="whatsThis">
+     <string>List of projects</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">combobox-popup: 1;</string>
+    </property>
+    <property name="maxVisibleItems">
+     <number>10</number>
+    </property>
+    <property name="duplicatesEnabled">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>220</x>
       <y>730</y>
       <width>111</width>
       <height>22</height>
@@ -85,14 +106,130 @@
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>300</x>
-      <y>640</y>
+      <x>250</x>
+      <y>700</y>
       <width>80</width>
       <height>22</height>
      </rect>
     </property>
     <property name="text">
      <string>Today</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="m_subProjectsCombo">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>660</y>
+      <width>111</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>100</height>
+     </size>
+    </property>
+    <property name="statusTip">
+     <string>Projects</string>
+    </property>
+    <property name="whatsThis">
+     <string>List of projects</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">combobox-popup: 1;</string>
+    </property>
+    <property name="maxVisibleItems">
+     <number>10</number>
+    </property>
+    <property name="duplicatesEnabled">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="m_activitiesCombo">
+    <property name="geometry">
+     <rect>
+      <x>270</x>
+      <y>660</y>
+      <width>111</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>100</height>
+     </size>
+    </property>
+    <property name="statusTip">
+     <string>Projects</string>
+    </property>
+    <property name="whatsThis">
+     <string>List of projects</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">combobox-popup: 1;</string>
+    </property>
+    <property name="maxVisibleItems">
+     <number>10</number>
+    </property>
+    <property name="duplicatesEnabled">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="m_username">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>570</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="m_password">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>600</y>
+      <width>113</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="echoMode">
+     <enum>QLineEdit::Password</enum>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="m_costlistCombo">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>630</y>
+      <width>110</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>16777215</width>
+      <height>100</height>
+     </size>
+    </property>
+    <property name="statusTip">
+     <string>Projects</string>
+    </property>
+    <property name="whatsThis">
+     <string>List of projects</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">combobox-popup: 1;</string>
+    </property>
+    <property name="maxVisibleItems">
+     <number>10</number>
+    </property>
+    <property name="duplicatesEnabled">
+     <bool>true</bool>
     </property>
    </widget>
   </widget>
