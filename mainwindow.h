@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QWebEnginePage>
 
+struct SElementId;
+
 namespace Ui {
 class MainWindow;
 }
@@ -44,7 +46,7 @@ private:
     Ui::MainWindow *ui;
     QWebEnginePage m_page;
 
-    static const QMap<QString, QString> s_lists;
+    static const QMap<QString, SElementId> s_lists;
     static QString s_username;
     static QString s_password;
 };

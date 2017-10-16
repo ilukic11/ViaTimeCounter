@@ -28,38 +28,62 @@ InvokeWrapper<Arg, R, C> invoke(R *receiver, void (C::*memberFun)(Arg))
 
 
 // ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstProjects
+// "   var row = document.getElementById(\"ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstProjects\");"
 const QString jsTemplate = QStringLiteral("function myFunction()"
-                                            "{"
-                                            "   var row = document.getElementById(\"%1\");"
-                                            "   if (row != null)"
-                                            "   {"
-                                            "       var cells = row.getElementsByTagName('option');"
-                                            "       var elements = [];"
-                                            "       for (var val of cells)"
-                                            "       {"
-                                            "           console.log(val.name + \" : \" + val.value);"
-                                            "           elements.push(val.innerText);"
-                                            "       }"
-                                            "       return elements;"
-                                            "   }"
-                                            "   else"
-                                            "   {"
-                                            "       return 'NullPtr!';"
-                                            "   }"
-                                            "}"
-                                            ""
-                                            "myFunction();"
+                                          "{"
+                                          "   var row = document.getElementById(\"%1\");"
+                                          "   if (row != null)"
+                                          "   {"
+                                          "       var cells = row.getElementsByTagName('option');"
+                                          "       var elements = [];"
+                                          "       for (var val of cells)"
+                                          "       {"
+                                          "           console.log(val.name + \" : \" + val.value);"
+                                          "           elements.push(val.innerText);"
+                                          "       }"
+                                          "       return elements;"
+                                          "   }"
+                                          "   else"
+                                          "   {"
+                                          "       return 'NullPtr!';"
+                                          "   }"
+                                          "}"
+                                          ""
+                                          "myFunction();"
                                          );
 
+// project::select
+// <option selected="selected" value="49adc4ee-8f9f-4e3f-84da-92c49baf09a8">AMOS Adaptations CT</option>
+// onchange="javascript:setTimeout('__doPostBack(\'ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$lstProjects\',\'\')', 0)"
+
+// subProject::select
+// <option selected="selected" value="f3c79609-8cf7-4668-b9c6-53ac8300a716">Actelion-114014</option>
+// onchange="javascript:setTimeout('__doPostBack(\'ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$lstSubProjects\',\'\')', 0)"
+
+// activity::select
+// <option selected="selected" value="33ee5550-8cd0-42b3-bb5d-07f32b42d2c7">Build Management                                  </option>
+// onchange="javascript:setTimeout('__doPostBack(\'ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$lstActivities\',\'\')', 0)"
+const QString jsSelectTemplate = QStringLiteral("function selectOption()"
+                                                "{"
+                                                "   document.getElementById(\"%1\").selectedIndex = %2;"
+                                                "   setTimeout('__doPostBack(\'%3\',\'\')', 0);"
+                                                "}"
+                                                "selectOption();"
+                                               );
 
 
-// "   var row = document.getElementById(\"ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstProjects\");"
+typedef struct SElementId
+{
+    SElementId(QString & id, QString & selectId) {m_listId = id;m_listSelectId = selectId;}
+    QString m_listId;
+    QString m_listSelectId;
+} SElementId;
 
-const QMap<QString, QString> MainWindow::s_lists = {
-    {"costlist", "ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_drpCostList"},
-    {"project", "ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstProjects"},
-    {"subProject", "ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstSubProjects"},
-    {"activity", "ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstActivities"},
+const QMap<QString, SElementId> MainWindow::s_lists = {
+    {"costlist", SElementId("ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_drpCostList", "")},
+    {"project", SElementId("ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstProjects", "ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$lstProjects")},
+    {"subProject", SElementId("ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstSubProjects", "ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$lstSubProjects")},
+    {"activity", SElementId("ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstActivities", "ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$lstActivities")},
 };
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -139,10 +163,6 @@ void MainWindow::jsCallbackActivity(const QVariant &v)
     ui->m_activitiesCombo->addItems(result);
 }
 
-
-//QString jsFunction =    "document.title"
-//                        ;
-
 // to parse HTML list, check:
 // http://www.qtcentre.org/threads/65044-Get-Html-element-value-with-QWebEngine
 void MainWindow::htmlReader(QString html)
@@ -191,9 +211,9 @@ void MainWindow::slotAuthentication(const QUrl &requestUrl, QAuthenticator *auth
 void MainWindow::on_pushButton_clicked()
 {
 //    QString url("http://help.websiteos.com/websiteos/example_of_a_simple_html_page.htm");
-//    QString url("http://tctmweb/viatimroot/default.aspx");
+    QString url("http://tctmweb/viatimroot/default.aspx");
 //    QString url("file:///home/ilukic/projects/web/tctmweb/viatimroot/default.aspx.html");
-    QString url("file:///home/ilukic/projects/web/Home%20-%20ViaTim/1/Home%20-%20ViaTim.html");
+//    QString url("file:///home/ilukic/projects/web/Home%20-%20ViaTim/1/Home%20-%20ViaTim.html");
 
     connect(&m_page, SIGNAL(loadFinished(bool)), this, SLOT(pageLoadFinished(bool)));
     // authentication purposes
