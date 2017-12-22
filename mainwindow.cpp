@@ -74,7 +74,10 @@ const QString jsSelectTemplate = QStringLiteral("function selectOption()"
 
 typedef struct SElementId
 {
-    SElementId(QString & id, QString & selectId) {m_listId = id;m_listSelectId = selectId;}
+    // default constructor needed for map
+    SElementId() {}
+
+    SElementId(const char * id, const char * selectId) {m_listId = id;m_listSelectId = selectId;}
     QString m_listId;
     QString m_listSelectId;
 } SElementId;
@@ -105,10 +108,18 @@ void MainWindow::on_pushButton_2_clicked()
     ui->dateEdit->setDate(QDate::currentDate());
 }
 
-QString MainWindow::generateJsFunction(const QString & element)
+QString MainWindow::generateJsFunction(const SElementId & elem)
+
 {
-    qDebug() << "=======\n" << QString(jsTemplate).arg(element);
-    return QString(jsTemplate).arg(element);
+    qDebug() << "=======\n" << QString(jsTemplate).arg(elem.m_listId);
+    return QString(jsTemplate).arg(elem.m_listId);
+}
+
+QString MainWindow::generateJsSelectFunction(const SElementId & elem, const int index)
+{
+    QString ret = QString(jsSelectTemplate).arg(elem.m_listId).arg(index).arg(elem.m_listSelectId);
+    qDebug() << "=======\n" << ret;
+    return ret;
 }
 
 void MainWindow::jsCallbackCostlist(const QVariant &v)
@@ -163,6 +174,8 @@ void MainWindow::jsCallbackActivity(const QVariant &v)
     ui->m_activitiesCombo->addItems(result);
 }
 
+
+
 // to parse HTML list, check:
 // http://www.qtcentre.org/threads/65044-Get-Html-element-value-with-QWebEngine
 void MainWindow::htmlReader(QString html)
@@ -206,6 +219,23 @@ void MainWindow::slotAuthentication(const QUrl &requestUrl, QAuthenticator *auth
     authenticator->setPassword(ui->m_password->text());
 }
 
+void MainWindow::slotComboIndexChangedCosts(int index)
+{
+    qDebug() << "---------- Combo index changed: " << index;
+    m_page.runJavaScript(generateJsSelectFunction(s_lists["subProject"], index), invoke(this, &MainWindow::jsCallbackSubProject));
+}
+
+void MainWindow::slotComboIndexChangedProjects(int index)
+{
+    qDebug() << "---------- Combo index changed: " << index;
+    m_page.runJavaScript(generateJsSelectFunction(s_lists["subProject"], index), invoke(this, &MainWindow::jsCallbackSubProject));
+}
+
+void MainWindow::slotComboIndexChanged(const QString & text)
+{
+    qDebug() << "---------- Combo index changed, text: " << text;
+}
+
 // checkout:
 // https://stackoverflow.com/questions/36680604/qwebenginepage-tohtml-returns-an-empty-string
 void MainWindow::on_pushButton_clicked()
@@ -219,8 +249,14 @@ void MainWindow::on_pushButton_clicked()
     // authentication purposes
     connect(&m_page, SIGNAL(authenticationRequired(QUrl,QAuthenticator*)), this, SLOT(slotAuthentication(QUrl, QAuthenticator*)));
 
-    m_page.load(QUrl(url));
+    // send request when combo box selection changes
+    connect(ui->m_costlistCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slotComboIndexChanged(const QString &)));
+    connect(ui->m_projectsCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slotComboIndexChanged(const QString &)));
 
+    connect(ui->m_costlistCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(slotComboIndexChanged(int)));
+    connect(ui->m_projectsCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(slotComboIndexChanged(int)));
+
+    m_page.load(QUrl(url));
     static ulong listIndex = 1;
 
     QTime time;

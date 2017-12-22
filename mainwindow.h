@@ -26,7 +26,8 @@ private slots:
 protected:
     void htmlReader(QString html);
 
-    static QString generateJsFunction(const QString & element);
+    static QString generateJsSelectFunction(const SElementId & elem, const int index);
+    static QString generateJsFunction(const SElementId & elem);
 
     // callback methods, later on to be merged into one
     // and pass caller element to be able to determine
@@ -41,6 +42,9 @@ public slots:
     void pageLoadFinished(bool b);
 
     void slotAuthentication(const QUrl &requestUrl, QAuthenticator *authenticator);
+
+    void slotComboIndexChanged(int index);
+    void slotComboIndexChanged(const QString & text);
 
 private:
     Ui::MainWindow *ui;
