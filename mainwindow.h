@@ -43,8 +43,11 @@ public slots:
 
     void slotAuthentication(const QUrl &requestUrl, QAuthenticator *authenticator);
 
-    void slotComboIndexChanged(int index);
+    void slotComboIndexChangedCosts(int index);
+    void slotComboIndexChangedProjects(int index);
+
     void slotComboIndexChanged(const QString & text);
+    void slotComboIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;

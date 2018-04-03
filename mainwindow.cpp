@@ -236,6 +236,11 @@ void MainWindow::slotComboIndexChanged(const QString & text)
     qDebug() << "---------- Combo index changed, text: " << text;
 }
 
+void MainWindow::slotComboIndexChanged(int index)
+{
+    qDebug() << "---------- Combo index changed, index: " << index;
+}
+
 // checkout:
 // https://stackoverflow.com/questions/36680604/qwebenginepage-tohtml-returns-an-empty-string
 void MainWindow::on_pushButton_clicked()
