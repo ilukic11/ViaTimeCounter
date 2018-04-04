@@ -45,6 +45,7 @@ public slots:
 
     void slotComboIndexChangedCosts(int index);
     void slotComboIndexChangedProjects(int index);
+    void slotComboIndexChangedSubProjects(int index);
 
     void slotComboIndexChanged(const QString & text);
     void slotComboIndexChanged(int index);

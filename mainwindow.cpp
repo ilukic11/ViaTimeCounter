@@ -222,13 +222,19 @@ void MainWindow::slotAuthentication(const QUrl &requestUrl, QAuthenticator *auth
 void MainWindow::slotComboIndexChangedCosts(int index)
 {
     qDebug() << "---------- Combo index changed: " << index;
-    m_page.runJavaScript(generateJsSelectFunction(s_lists["subProject"], index), invoke(this, &MainWindow::jsCallbackSubProject));
+    m_page.runJavaScript(generateJsSelectFunction(s_lists["project"], index), invoke(this, &MainWindow::jsCallbackProject));
 }
 
 void MainWindow::slotComboIndexChangedProjects(int index)
 {
     qDebug() << "---------- Combo index changed: " << index;
     m_page.runJavaScript(generateJsSelectFunction(s_lists["subProject"], index), invoke(this, &MainWindow::jsCallbackSubProject));
+}
+
+void MainWindow::slotComboIndexChangedSubProjects(int index)
+{
+    qDebug() << "---------- Combo index changed: " << index;
+    m_page.runJavaScript(generateJsSelectFunction(s_lists["activity"], index), invoke(this, &MainWindow::jsCallbackActivity));
 }
 
 void MainWindow::slotComboIndexChanged(const QString & text)
