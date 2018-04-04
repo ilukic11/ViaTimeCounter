@@ -181,7 +181,7 @@
    <widget class="QLineEdit" name="m_username">
     <property name="geometry">
      <rect>
-      <x>150</x>
+      <x>90</x>
       <y>570</y>
       <width>113</width>
       <height>22</height>
@@ -191,7 +191,7 @@
    <widget class="QLineEdit" name="m_password">
     <property name="geometry">
      <rect>
-      <x>150</x>
+      <x>90</x>
       <y>600</y>
       <width>113</width>
       <height>22</height>
@@ -232,6 +232,19 @@
      <bool>true</bool>
     </property>
    </widget>
+   <widget class="QPushButton" name="m_pbGetList">
+    <property name="geometry">
+     <rect>
+      <x>220</x>
+      <y>600</y>
+      <width>111</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Get List</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
@@ -239,7 +252,7 @@
      <x>0</x>
      <y>0</y>
      <width>401</width>
-     <height>19</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuViaTim_Time_Counter">

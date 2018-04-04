@@ -95,6 +95,20 @@ MainWindow::MainWindow(QWidget *parent) :
     m_page()
 {
     ui->setupUi(this);
+
+    connect(&m_page, SIGNAL(loadFinished(bool)), this, SLOT(pageLoadFinished(bool)));
+    // authentication purposes
+    connect(&m_page, SIGNAL(authenticationRequired(QUrl,QAuthenticator*)), this, SLOT(slotAuthentication(QUrl, QAuthenticator*)));
+
+    // send request when combo box selection changes
+//    connect(ui->m_costlistCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slotComboIndexChanged(const QString &)));
+//    connect(ui->m_projectsCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slotComboIndexChanged(const QString &)));
+
+    // currentIndexChanged is called on any event (user/programmatically) which causes infinite loop
+    // highlight is called on user interaction each time mouse crosses over an item in a list
+    // activated is called when user clicks on highlighted item
+    connect(ui->m_costlistCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedCosts(int)));
+    connect(ui->m_projectsCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedProjects(int)));
 }
 
 
@@ -272,34 +286,17 @@ void MainWindow::slotComboIndexChanged(int index)
 // https://stackoverflow.com/questions/36680604/qwebenginepage-tohtml-returns-an-empty-string
 void MainWindow::on_pushButton_clicked()
 {
-//    QString url("http://help.websiteos.com/websiteos/example_of_a_simple_html_page.htm");
-    QString url("http://tctmweb/viatimroot/default.aspx");
-//    QString url("file:///home/ilukic/projects/web/tctmweb/viatimroot/default.aspx.html");
-//    QString url("file:///home/ilukic/projects/web/Home%20-%20ViaTim/1/Home%20-%20ViaTim.html");
-
-    connect(&m_page, SIGNAL(loadFinished(bool)), this, SLOT(pageLoadFinished(bool)));
-    // authentication purposes
-    connect(&m_page, SIGNAL(authenticationRequired(QUrl,QAuthenticator*)), this, SLOT(slotAuthentication(QUrl, QAuthenticator*)));
-
-    // send request when combo box selection changes
-//    connect(ui->m_costlistCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slotComboIndexChanged(const QString &)));
-//    connect(ui->m_projectsCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slotComboIndexChanged(const QString &)));
-
-    // currentIndexChanged is called on any event (user/programmatically) which causes infinite loop
-    // highlight is called on user interaction each time mouse crosses over an item in a list
-    // activated is called when user clicks on highlighted item
-    connect(ui->m_costlistCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedCosts(int)));
-    connect(ui->m_projectsCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedProjects(int)));
-
-    m_page.load(QUrl(url));
-    static ulong listIndex = 1;
-
-    QTime time;
-    time.start();
-    // random sleep
-    QThread::sleep(2 * listIndex++);
-
     QDate date(2017, 8, 13);
-    auto item = new CProjectListItem(time, date, "GRP", "Name", "Theme", "Topic", "Comment", ui->listWidget);
+    auto item = new CProjectListItem(QTime(1, 33), date, ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
+                                     "Comment", ui->listWidget);
     ui->listWidget->addItem(item);
+}
+
+void MainWindow::on_m_pbGetList_clicked()
+{
+    //    QString url("http://help.websiteos.com/websiteos/example_of_a_simple_html_page.htm");
+        QString url("http://tctmweb/viatimroot/default.aspx");
+    //    QString url("file:///home/ilukic/projects/web/tctmweb/viatimroot/default.aspx.html");
+    //    QString url("file:///home/ilukic/projects/web/Home%20-%20ViaTim/1/Home%20-%20ViaTim.html");
+        m_page.load(QUrl(url));
 }
