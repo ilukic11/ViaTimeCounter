@@ -222,7 +222,6 @@ void MainWindow::slotAuthentication(const QUrl &requestUrl, QAuthenticator *auth
 void MainWindow::slotComboIndexChangedCosts(int index)
 {
     qDebug() << "---------- Combo costs index changed: " << index;
-    qDebug() << "Generated JS function (project):\n" << generateJsSelectFunction(s_lists["project"], index);
 
     m_page.runJavaScript(generateJsSelectFunction(s_lists["project"], index), invoke(this, &MainWindow::jsCallbackProject));
 }
@@ -230,17 +229,15 @@ void MainWindow::slotComboIndexChangedCosts(int index)
 void MainWindow::slotComboIndexChangedProjects(int index)
 {
     qDebug() << "---------- Combo project index changed: " << index;
-    qDebug() << "Generated JS function (subProject):\n" << generateJsSelectFunction(s_lists["subProject"], index);
 
-//    m_page.runJavaScript(generateJsSelectFunction(s_lists["subProject"], index), invoke(this, &MainWindow::jsCallbackSubProject));
+    m_page.runJavaScript(generateJsSelectFunction(s_lists["subProject"], index), invoke(this, &MainWindow::jsCallbackSubProject));
 }
 
 void MainWindow::slotComboIndexChangedSubProjects(int index)
 {
     qDebug() << "---------- Combo subProject index changed: " << index;
-    qDebug() << "Generated JS function (activity):\n" << generateJsSelectFunction(s_lists["activity"], index);
 
-//    m_page.runJavaScript(generateJsSelectFunction(s_lists["activity"], index), invoke(this, &MainWindow::jsCallbackActivity));
+    m_page.runJavaScript(generateJsSelectFunction(s_lists["activity"], index), invoke(this, &MainWindow::jsCallbackActivity));
 }
 
 void MainWindow::slotComboIndexChanged(const QString & text)
@@ -270,8 +267,8 @@ void MainWindow::on_pushButton_clicked()
 //    connect(ui->m_costlistCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slotComboIndexChanged(const QString &)));
 //    connect(ui->m_projectsCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slotComboIndexChanged(const QString &)));
 
-    connect(ui->m_costlistCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(slotComboIndexChangedCosts(int)));
-    connect(ui->m_projectsCombo, SIGNAL(currentIndexChanged(int)), this, SLOT(slotComboIndexChangedProjects(int)));
+    connect(ui->m_costlistCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedCosts(int)));
+    connect(ui->m_projectsCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedProjects(int)));
 
     m_page.load(QUrl(url));
     static ulong listIndex = 1;
