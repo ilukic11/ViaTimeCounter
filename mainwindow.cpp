@@ -133,6 +133,11 @@ void MainWindow::jsCallbackCostlist(const QVariant &v)
     // set combo box list
     ui->m_costlistCombo->clear();
     ui->m_costlistCombo->addItems(result);
+
+    if (ui->m_costlistCombo->count() > m_costInd && m_costInd > -1)
+    {
+        ui->m_costlistCombo->setCurrentIndex(m_costInd);
+    }
 }
 
 void MainWindow::jsCallbackProject(const QVariant &v)
@@ -146,6 +151,11 @@ void MainWindow::jsCallbackProject(const QVariant &v)
     // set combo box list
     ui->m_projectsCombo->clear();
     ui->m_projectsCombo->addItems(result);
+
+    if (ui->m_projectsCombo->count() > m_projInd && m_projInd > -1)
+    {
+        ui->m_projectsCombo->setCurrentIndex(m_projInd);
+    }
 }
 
 void MainWindow::jsCallbackSubProject(const QVariant &v)
@@ -159,6 +169,11 @@ void MainWindow::jsCallbackSubProject(const QVariant &v)
     // set combo box list
     ui->m_subProjectsCombo->clear();
     ui->m_subProjectsCombo->addItems(result);
+
+    if (ui->m_subProjectsCombo->count() > m_subpInd && m_subpInd > -1)
+    {
+        ui->m_subProjectsCombo->setCurrentIndex(m_subpInd);
+    }
 }
 
 void MainWindow::jsCallbackActivity(const QVariant &v)
@@ -223,6 +238,7 @@ void MainWindow::slotComboIndexChangedCosts(int index)
 {
     qDebug() << "---------- Combo costs index changed: " << index;
 
+    m_costInd = index;
     m_page.runJavaScript(generateJsSelectFunction(s_lists["project"], index), invoke(this, &MainWindow::jsCallbackProject));
 }
 
@@ -230,6 +246,7 @@ void MainWindow::slotComboIndexChangedProjects(int index)
 {
     qDebug() << "---------- Combo project index changed: " << index;
 
+    m_projInd = index;
     m_page.runJavaScript(generateJsSelectFunction(s_lists["subProject"], index), invoke(this, &MainWindow::jsCallbackSubProject));
 }
 
@@ -237,6 +254,7 @@ void MainWindow::slotComboIndexChangedSubProjects(int index)
 {
     qDebug() << "---------- Combo subProject index changed: " << index;
 
+    m_subpInd = index;
     m_page.runJavaScript(generateJsSelectFunction(s_lists["activity"], index), invoke(this, &MainWindow::jsCallbackActivity));
 }
 
@@ -267,6 +285,9 @@ void MainWindow::on_pushButton_clicked()
 //    connect(ui->m_costlistCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slotComboIndexChanged(const QString &)));
 //    connect(ui->m_projectsCombo, SIGNAL(currentIndexChanged(const QString &)), this, SLOT(slotComboIndexChanged(const QString &)));
 
+    // currentIndexChanged is called on any event (user/programmatically) which causes infinite loop
+    // highlight is called on user interaction each time mouse crosses over an item in a list
+    // activated is called when user clicks on highlighted item
     connect(ui->m_costlistCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedCosts(int)));
     connect(ui->m_projectsCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedProjects(int)));
 

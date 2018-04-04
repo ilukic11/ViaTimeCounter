@@ -54,6 +54,11 @@ private:
     Ui::MainWindow *ui;
     QWebEnginePage m_page;
 
+    int m_costInd = -1;
+    int m_projInd = -1;
+    int m_subpInd = -1;
+    int m_actiInd = -1;
+
     static const QMap<QString, SElementId> s_lists;
     static QString s_username;
     static QString s_password;
