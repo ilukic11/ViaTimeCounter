@@ -9,9 +9,9 @@
     .arg((time.elapsed() %  MS_PER_MIN) / 1000, 2, 10, QChar('0'))        \
     )
 
-CProjectListItem::CProjectListItem(QTime time, QDate date, QString projGrp, QString projName, QString projTheme, QString projTopic, QString comment, QListWidget* parent) :
+CProjectListItem::CProjectListItem(int secOff, QDate date, QString projGrp, QString projName, QString projTheme, QString projTopic, QString comment, QListWidget* parent) :
     QListWidgetItem(getUpdatedTitle(time, projName, projTheme, projTopic), parent),
-    m_time(time),
+    m_secOff(secOff),
     m_date(date),
     m_group(projGrp),
     m_name(projName),
@@ -29,6 +29,7 @@ QString CProjectListItem::getUpdatedTitle() const
 
 QTime CProjectListItem::getTime() const
 {
+//    return m_time.addSecs(m_secOff).toString("HH:mm:ss");
     return m_time;
 }
 

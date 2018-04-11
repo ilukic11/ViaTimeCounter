@@ -288,7 +288,7 @@ void MainWindow::on_pushButton_clicked()
 {
     QDate date(2017, 8, 13);
     auto item = new CProjectListItem(QTime(1, 33), date, ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
-                                     "Comment", ui->listWidget);
+                                     ui->m_teComment->toPlainText(), ui->listWidget);
     ui->listWidget->addItem(item);
 }
 

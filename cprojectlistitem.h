@@ -8,7 +8,7 @@
 class CProjectListItem : public QListWidgetItem
 {
 public:
-    CProjectListItem(QTime time, QDate date, QString projGrp, QString projName, QString projTheme, QString projTopic, QString comment, QListWidget* parent);
+    CProjectListItem(int secOff, QDate date, QString projGrp, QString projName, QString projTheme, QString projTopic, QString comment, QListWidget* parent);
 
     QString getUpdatedTitle() const;
 
@@ -36,6 +36,7 @@ public:
 private:
     QString getUpdatedTitle(QTime time, QString projName, QString projTheme, QString projTopic) const;
 
+    int m_secOff;
     QTime m_time;
     QDate m_date;
     QString m_group;
