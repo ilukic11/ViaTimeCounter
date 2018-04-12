@@ -25,6 +25,8 @@ private slots:
 
     void on_m_pbGetList_clicked();
 
+    void on_m_pbSubmit_clicked();
+
 protected:
     void htmlReader(QString html);
 
@@ -38,6 +40,7 @@ protected:
     void jsCallbackProject(const QVariant &v);
     void jsCallbackSubProject(const QVariant &v);
     void jsCallbackActivity(const QVariant &v);
+    void jsSubmit(const QVariant &v);
 
 
 public slots:

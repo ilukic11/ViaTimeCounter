@@ -72,6 +72,17 @@ const QString jsSelectTemplate = QStringLiteral("function selectOption()"
                                                );
 
 
+// submit
+// javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions("ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$btnAddTimeRecord", "", true, "", "", false, false))
+const QString jsSubmitTemplate = QStringLiteral("function submit()"
+                                                "{"
+                                                "   WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(\"ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$btnAddTimeRecord\", \"\", true, \"\", \"\", false, false))"
+                                                "}"
+                                                "submit();"
+                                               );
+
+
+
 typedef struct SElementId
 {
     // default constructor needed for map
@@ -203,6 +214,10 @@ void MainWindow::jsCallbackActivity(const QVariant &v)
     ui->m_activitiesCombo->addItems(result);
 }
 
+void MainWindow::jsSubmit(const QVariant &v)
+{
+    qDebug() << "Return from submit...";
+}
 
 
 // to parse HTML list, check:
@@ -287,7 +302,10 @@ void MainWindow::slotComboIndexChanged(int index)
 void MainWindow::on_pushButton_clicked()
 {
     QDate date(2017, 8, 13);
-    auto item = new CProjectListItem(QTime(1, 33), date, ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
+    auto duration = ui->m_timeDuration->time();
+    int secOffset = duration.hour() * 3600 + duration.minute() * 60 + duration.second();
+    auto item = new CProjectListItem(secOffset, date,
+                                     ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
                                      ui->m_teComment->toPlainText(), ui->listWidget);
     ui->listWidget->addItem(item);
 }
@@ -299,4 +317,9 @@ void MainWindow::on_m_pbGetList_clicked()
     //    QString url("file:///home/ilukic/projects/web/tctmweb/viatimroot/default.aspx.html");
     //    QString url("file:///home/ilukic/projects/web/Home%20-%20ViaTim/1/Home%20-%20ViaTim.html");
         m_page.load(QUrl(url));
+}
+
+void MainWindow::on_m_pbSubmit_clicked()
+{
+    m_page.runJavaScript(jsSubmitTemplate, invoke(this, &MainWindow::jsSubmit));
 }

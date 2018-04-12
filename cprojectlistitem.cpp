@@ -10,7 +10,7 @@
     )
 
 CProjectListItem::CProjectListItem(int secOff, QDate date, QString projGrp, QString projName, QString projTheme, QString projTopic, QString comment, QListWidget* parent) :
-    QListWidgetItem(getUpdatedTitle(time, projName, projTheme, projTopic), parent),
+    QListWidgetItem("", parent),
     m_secOff(secOff),
     m_date(date),
     m_group(projGrp),
@@ -19,6 +19,10 @@ CProjectListItem::CProjectListItem(int secOff, QDate date, QString projGrp, QStr
     m_topic(projTopic),
     m_comment(comment)
 {
+    // set the start time
+    // call start
+    // account for offset when using elapsed time
+    this->setText(getUpdatedTitle(m_time, projName, projTheme, projTopic));
 }
 
 QString CProjectListItem::getUpdatedTitle() const
