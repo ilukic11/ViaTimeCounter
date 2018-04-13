@@ -23,9 +23,9 @@ private slots:
 
     void on_pushButton_clicked();
 
-    void on_m_pbGetList_clicked();
-
     void on_m_pbSubmit_clicked();
+
+    void on_m_getList_clicked();
 
 protected:
     void htmlReader(QString html);

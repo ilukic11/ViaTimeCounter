@@ -29,23 +29,13 @@
      </item>
     </layout>
    </widget>
-   <widget class="QPlainTextEdit" name="m_teComment">
+   <widget class="QPlainTextEdit" name="m_comment">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>699</y>
       <width>191</width>
       <height>101</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QTimeEdit" name="m_timeDuration">
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>730</y>
-      <width>61</width>
-      <height>23</height>
      </rect>
     </property>
    </widget>
@@ -90,7 +80,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="m_addPrj">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -103,7 +93,7 @@
      <string>Add Project</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="m_today">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -232,7 +222,7 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QPushButton" name="m_pbGetList">
+   <widget class="QPushButton" name="m_getList">
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -245,7 +235,7 @@
      <string>Get List</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="m_pbSubmit">
+   <widget class="QPushButton" name="m_submit">
     <property name="geometry">
      <rect>
       <x>300</x>
@@ -256,6 +246,26 @@
     </property>
     <property name="text">
      <string>Submit</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="m_hours">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>730</y>
+      <width>31</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="m_minutes">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>730</y>
+      <width>31</width>
+      <height>22</height>
+     </rect>
     </property>
    </widget>
   </widget>

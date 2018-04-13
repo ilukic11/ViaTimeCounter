@@ -358,21 +358,11 @@ void MainWindow::slotComboIndexChanged(int index)
 void MainWindow::on_pushButton_clicked()
 {
     QDate date(2017, 8, 13);
-    auto duration = ui->m_timeDuration->time();
-    int secOffset = duration.hour() * 3600 + duration.minute() * 60 + duration.second();
+    int secOffset = ui->m_hours->text().toInt() * 3600 + ui->m_minutes->text().toInt() * 60;
     auto item = new CProjectListItem(secOffset, date,
                                      ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
-                                     ui->m_teComment->toPlainText(), ui->listWidget);
+                                     ui->m_comment->toPlainText(), ui->listWidget);
     ui->listWidget->addItem(item);
-}
-
-void MainWindow::on_m_pbGetList_clicked()
-{
-    //    QString url("http://help.websiteos.com/websiteos/example_of_a_simple_html_page.htm");
-        QString url("http://tctmweb/viatimroot/default.aspx");
-    //    QString url("file:///home/ilukic/projects/web/tctmweb/viatimroot/default.aspx.html");
-    //    QString url("file:///home/ilukic/projects/web/Home%20-%20ViaTim/1/Home%20-%20ViaTim.html");
-        m_page.load(QUrl(url));
 }
 
 void MainWindow::on_m_pbSubmit_clicked()
@@ -380,7 +370,7 @@ void MainWindow::on_m_pbSubmit_clicked()
     // temp, set time/comment
     m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtDurationHours').value = '%1'").arg("1"));
     m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtDurationMinutes').value = '%1'").arg("0"));
-    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtComment').value = '%1'").arg(ui->m_teComment->toPlainText()));
+    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtComment').value = '%1'").arg(ui->m_comment->toPlainText()));
 
     // temp, set date
     m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_dtDate_dtDateDate').value = '%1'").arg("4/13/2018"));
@@ -391,4 +381,13 @@ void MainWindow::on_m_pbSubmit_clicked()
     // submit form
 //    m_page.runJavaScript(jsSubmitTemplate, invoke(this, &MainWindow::jsSubmit));
     m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_btnAddTimeRecord').click();"));
+}
+
+void MainWindow::on_m_getList_clicked()
+{
+    //    QString url("http://help.websiteos.com/websiteos/example_of_a_simple_html_page.htm");
+        QString url("http://tctmweb/viatimroot/default.aspx");
+    //    QString url("file:///home/ilukic/projects/web/tctmweb/viatimroot/default.aspx.html");
+    //    QString url("file:///home/ilukic/projects/web/Home%20-%20ViaTim/1/Home%20-%20ViaTim.html");
+        m_page.load(QUrl(url));
 }
