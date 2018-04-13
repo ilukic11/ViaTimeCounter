@@ -51,6 +51,7 @@ protected:
 
     // submit entry to server
     void jsSubmit(const QVariant &v);
+    void jsToday(const QVariant &v);
 
 public slots:
     void pageLoadFinished(bool b);

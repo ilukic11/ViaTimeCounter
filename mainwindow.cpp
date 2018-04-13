@@ -245,6 +245,10 @@ void MainWindow::jsSubmit(const QVariant &v)
     qDebug() << "Return from submit...";
 }
 
+void MainWindow::jsToday(const QVariant &v)
+{
+    qDebug() << "Return from today...";
+}
 
 // to parse HTML list, check:
 // http://www.qtcentre.org/threads/65044-Get-Html-element-value-with-QWebEngine
@@ -360,6 +364,17 @@ void MainWindow::on_pushButton_clicked()
                                      ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
                                      ui->m_teComment->toPlainText(), ui->listWidget);
     ui->listWidget->addItem(item);
+
+    // temp, set date/time/comment
+    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtDurationHours').value = '%1'").arg("1"));
+    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtDurationMinutes').value = '%1'").arg("0"));
+    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtComment').value = '%1'").arg("Comment"));
+
+    //m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_dtDate_dtDateDate').value = '%1'").arg("4/13/2018"));
+//    m_page.runJavaScript("WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(\"ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$Button1\", \"\", true, \"\", \"\", false, false))",
+//                         invoke(this, &MainWindow::jsToday));
+    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_Button1').click();"));
+
 }
 
 void MainWindow::on_m_pbGetList_clicked()
@@ -373,5 +388,6 @@ void MainWindow::on_m_pbGetList_clicked()
 
 void MainWindow::on_m_pbSubmit_clicked()
 {
-    m_page.runJavaScript(jsSubmitTemplate, invoke(this, &MainWindow::jsSubmit));
+//    m_page.runJavaScript(jsSubmitTemplate, invoke(this, &MainWindow::jsSubmit));
+    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_btnAddTimeRecord').click();"));
 }
