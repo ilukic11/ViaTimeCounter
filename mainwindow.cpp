@@ -120,6 +120,8 @@ MainWindow::MainWindow(QWidget *parent) :
     // activated is called when user clicks on highlighted item
     connect(ui->m_costlistCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedCosts(int)));
     connect(ui->m_projectsCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedProjects(int)));
+    connect(ui->m_subProjectsCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedSubProjects(int)));
+    connect(ui->m_activitiesCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedActivity(int)));
 }
 
 
@@ -214,6 +216,30 @@ void MainWindow::jsCallbackActivity(const QVariant &v)
     ui->m_activitiesCombo->addItems(result);
 }
 
+void MainWindow::jsCallbackSelectCostlist(const QVariant &v)
+{
+    // now parse the result
+//    m_page.runJavaScript(generateJsFunction(s_lists["costlist"]), invoke(this, &MainWindow::jsCallbackCostlist));
+    m_page.runJavaScript(generateJsFunction(s_lists["project"]), invoke(this, &MainWindow::jsCallbackProject));
+}
+
+void MainWindow::jsCallbackSelectProject(const QVariant &v)
+{
+    // now parse the result
+    m_page.runJavaScript(generateJsFunction(s_lists["subProject"]), invoke(this, &MainWindow::jsCallbackSubProject));
+}
+
+void MainWindow::jsCallbackSelectSubProject(const QVariant &v)
+{
+    // now parse the result
+    m_page.runJavaScript(generateJsFunction(s_lists["activity"]), invoke(this, &MainWindow::jsCallbackActivity));
+}
+
+void MainWindow::jsCallbackSelectActivity(const QVariant &v)
+{
+    // now parse the result
+}
+
 void MainWindow::jsSubmit(const QVariant &v)
 {
     qDebug() << "Return from submit...";
@@ -225,30 +251,43 @@ void MainWindow::jsSubmit(const QVariant &v)
 void MainWindow::htmlReader(QString html)
 {
     qDebug() << "---------------------\nHTML size: " << html.size();
-    qDebug() << "HTML:\n" << html << "\n--------------------------------";
 
-    m_page.runJavaScript(generateJsFunction(s_lists["project"]), invoke(this, &MainWindow::jsCallbackProject));
+    QString filename = QString("/home/ilukic/projects/web/html_logs/") + QDateTime::currentDateTime().toString("yyyy-MM-dd_HH:mm:ss") + ".html";
+    QFile file(filename);
+    if (file.open(QIODevice::WriteOnly))
+    {
+        QTextStream stream(&file);
+        stream << html << endl;
+    }
+    else
+    {
+        qDebug() << "filename = " << filename << "\nHTML:\n" << html << "\n--------------------------------";
+    }
+
+    file.close();
+
+//    m_page.runJavaScript(generateJsFunction(s_lists["project"]), invoke(this, &MainWindow::jsCallbackProject));
 
     // should cascade to another web page call
     // but purely for test purposes of parsing elements
     // The chaining mechanism will later on include selection
     // and triggering of sending another request and parsing results
-    m_page.runJavaScript(generateJsFunction(s_lists["subProject"]), invoke(this, &MainWindow::jsCallbackSubProject));
-    m_page.runJavaScript(generateJsFunction(s_lists["activity"]), invoke(this, &MainWindow::jsCallbackActivity));
+//    m_page.runJavaScript(generateJsFunction(s_lists["subProject"]), invoke(this, &MainWindow::jsCallbackSubProject));
+//    m_page.runJavaScript(generateJsFunction(s_lists["activity"]), invoke(this, &MainWindow::jsCallbackActivity));
     m_page.runJavaScript(generateJsFunction(s_lists["costlist"]), invoke(this, &MainWindow::jsCallbackCostlist));
 
 
-    auto children = m_page.children();
-    for (auto child : children)
-    {
-        qDebug() << "--------------------\nChild found:" << child;
-        qDebug() << "obj Info: ";
-        child->dumpObjectInfo();
-        for (auto propertyName : child->dynamicPropertyNames())
-        {
-            qDebug() << "+++ Property name: " << propertyName.toStdString().c_str();
-        }
-    }
+//    auto children = m_page.children();
+//    for (auto child : children)
+//    {
+//        qDebug() << "--------------------\nChild found:" << child;
+//        qDebug() << "obj Info: ";
+//        child->dumpObjectInfo();
+//        for (auto propertyName : child->dynamicPropertyNames())
+//        {
+//            qDebug() << "+++ Property name: " << propertyName.toStdString().c_str();
+//        }
+//    }
 }
 
 void MainWindow::pageLoadFinished(bool b)
@@ -268,7 +307,8 @@ void MainWindow::slotComboIndexChangedCosts(int index)
     qDebug() << "---------- Combo costs index changed: " << index;
 
     m_costInd = index;
-    m_page.runJavaScript(generateJsSelectFunction(s_lists["project"], index), invoke(this, &MainWindow::jsCallbackProject));
+    // select proper index on page and run js
+    m_page.runJavaScript(generateJsSelectFunction(s_lists["costlist"], index), invoke(this, &MainWindow::jsCallbackSelectCostlist));
 }
 
 void MainWindow::slotComboIndexChangedProjects(int index)
@@ -276,7 +316,8 @@ void MainWindow::slotComboIndexChangedProjects(int index)
     qDebug() << "---------- Combo project index changed: " << index;
 
     m_projInd = index;
-    m_page.runJavaScript(generateJsSelectFunction(s_lists["subProject"], index), invoke(this, &MainWindow::jsCallbackSubProject));
+    // select proper index on page and run js
+    m_page.runJavaScript(generateJsSelectFunction(s_lists["project"], index), invoke(this, &MainWindow::jsCallbackSelectProject));
 }
 
 void MainWindow::slotComboIndexChangedSubProjects(int index)
@@ -284,8 +325,19 @@ void MainWindow::slotComboIndexChangedSubProjects(int index)
     qDebug() << "---------- Combo subProject index changed: " << index;
 
     m_subpInd = index;
-    m_page.runJavaScript(generateJsSelectFunction(s_lists["activity"], index), invoke(this, &MainWindow::jsCallbackActivity));
+    // select proper index on page and run js
+    m_page.runJavaScript(generateJsSelectFunction(s_lists["subProject"], index), invoke(this, &MainWindow::jsCallbackSelectSubProject));
 }
+
+void MainWindow::slotComboIndexChangedActivity(int index)
+{
+    qDebug() << "---------- Combo subProject index changed: " << index;
+
+    m_subpInd = index;
+    // select proper index on page and run js
+    m_page.runJavaScript(generateJsSelectFunction(s_lists["activity"], index), invoke(this, &MainWindow::jsCallbackSelectActivity));
+}
+
 
 void MainWindow::slotComboIndexChanged(const QString & text)
 {

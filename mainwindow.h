@@ -33,15 +33,24 @@ protected:
     static QString generateJsSelectFunction(const SElementId & elem, const int index);
     static QString generateJsFunction(const SElementId & elem);
 
-    // callback methods, later on to be merged into one
+    // callback methods (parsing), later on to be merged into one
     // and pass caller element to be able to determine
     // the target element for update
     void jsCallbackCostlist(const QVariant &v);
     void jsCallbackProject(const QVariant &v);
     void jsCallbackSubProject(const QVariant &v);
     void jsCallbackActivity(const QVariant &v);
-    void jsSubmit(const QVariant &v);
 
+    // callback methods (select index), later on to be merged into one
+    // and pass caller element to be able to determine
+    // the target element for update
+    void jsCallbackSelectCostlist(const QVariant &v);
+    void jsCallbackSelectProject(const QVariant &v);
+    void jsCallbackSelectSubProject(const QVariant &v);
+    void jsCallbackSelectActivity(const QVariant &v);
+
+    // submit entry to server
+    void jsSubmit(const QVariant &v);
 
 public slots:
     void pageLoadFinished(bool b);
@@ -51,6 +60,7 @@ public slots:
     void slotComboIndexChangedCosts(int index);
     void slotComboIndexChangedProjects(int index);
     void slotComboIndexChangedSubProjects(int index);
+    void slotComboIndexChangedActivity(int index);
 
     void slotComboIndexChanged(const QString & text);
     void slotComboIndexChanged(int index);
