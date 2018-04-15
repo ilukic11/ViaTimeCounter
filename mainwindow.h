@@ -19,13 +19,13 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_2_clicked();
-
-    void on_pushButton_clicked();
-
-    void on_m_pbSubmit_clicked();
-
     void on_m_getList_clicked();
+
+    void on_m_today_clicked();
+
+    void on_m_addPrj_clicked();
+
+    void on_m_submit_clicked();
 
 protected:
     void htmlReader(QString html);

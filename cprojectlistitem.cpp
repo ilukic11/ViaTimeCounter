@@ -2,12 +2,12 @@
 
 #define MS_PER_MIN (60 * 1000)
 #define MS_PER_HOU (60 * MS_PER_MIN)
-#define TIME_ELAPSED(time)                                                \
-    (QString("%1:%2:%3")                                                  \
-    .arg(time.elapsed() / MS_PER_HOU, 2, 10, QChar('0'))                  \
-    .arg((time.elapsed() %  MS_PER_HOU) / MS_PER_MIN, 2, 10, QChar('0'))  \
-    .arg((time.elapsed() %  MS_PER_MIN) / 1000, 2, 10, QChar('0'))        \
-    )
+//#define TIME_ELAPSED(time)                                                \
+//    (QString("%1:%2:%3")                                                  \
+//    .arg(time.elapsed() / MS_PER_HOU, 2, 10, QChar('0'))                  \
+//    .arg((time.elapsed() %  MS_PER_HOU) / MS_PER_MIN, 2, 10, QChar('0'))  \
+//    .arg((time.elapsed() %  MS_PER_MIN) / 1000, 2, 10, QChar('0'))        \
+//    )
 
 CProjectListItem::CProjectListItem(int secOff, QDate date, QString projGrp, QString projName, QString projTheme, QString projTopic, QString comment, QListWidget* parent) :
     QListWidgetItem("", parent),
@@ -19,17 +19,17 @@ CProjectListItem::CProjectListItem(int secOff, QDate date, QString projGrp, QStr
     m_topic(projTopic),
     m_comment(comment)
 {
-    // set the start time
+    // 1s
+    m_cntTimer.setInterval(1000);
+    // connect timer
+    connnect(&m_cntTimer, &QTimer::timeout, this, &CProjectListItem::secCnt);
     // call start
+    QTimer::singleShot(0,
+                       [this] { m_cntTimer.start(); });
+
     // account for offset when using elapsed time
-    this->setText(getUpdatedTitle(m_time, projName, projTheme, projTopic));
+    this->setText(getUpdatedTitle());
 }
-
-QString CProjectListItem::getUpdatedTitle() const
-{
-    return getUpdatedTitle(m_time, m_name, m_theme, m_topic);
-}
-
 
 QTime CProjectListItem::getTime() const
 {
@@ -102,7 +102,12 @@ void CProjectListItem::setComment(const QString &comment)
     m_comment = comment;
 }
 
-QString CProjectListItem::getUpdatedTitle(QTime time, QString projName, QString projTheme, QString projTopic) const
+QString CProjectListItem::getUpdatedTitle() const
 {
-    return QString(projName + " > " + projTheme + " > " + projTopic + " (" + TIME_ELAPSED(time) + ")");
+    return QString(m_comment + " >> (" + /*TIME_ELAPSED(time) +*/ ")");
+}
+
+void CProjectListItem::secCnt()
+{
+    qDebug() << "1 sec";
 }

@@ -34,19 +34,22 @@
      <rect>
       <x>10</x>
       <y>699</y>
-      <width>191</width>
-      <height>101</height>
+      <width>181</width>
+      <height>111</height>
      </rect>
     </property>
    </widget>
-   <widget class="QDateEdit" name="dateEdit">
+   <widget class="QDateEdit" name="m_date">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>200</x>
       <y>700</y>
-      <width>81</width>
+      <width>91</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="displayFormat">
+     <string>M/d/yyyy</string>
     </property>
    </widget>
    <widget class="QComboBox" name="m_projectsCombo">
@@ -251,9 +254,9 @@
    <widget class="QLineEdit" name="m_hours">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>200</x>
       <y>730</y>
-      <width>31</width>
+      <width>41</width>
       <height>22</height>
      </rect>
     </property>
@@ -261,9 +264,9 @@
    <widget class="QLineEdit" name="m_minutes">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>250</x>
       <y>730</y>
-      <width>31</width>
+      <width>41</width>
       <height>22</height>
      </rect>
     </property>
@@ -275,7 +278,7 @@
      <x>0</x>
      <y>0</y>
      <width>401</width>
-     <height>22</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuViaTim_Time_Counter">

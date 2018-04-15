@@ -122,17 +122,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->m_projectsCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedProjects(int)));
     connect(ui->m_subProjectsCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedSubProjects(int)));
     connect(ui->m_activitiesCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedActivity(int)));
+
+    ui->m_date->setDate(QDate::currentDate());
 }
 
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::on_pushButton_2_clicked()
-{
-    ui->dateEdit->setDate(QDate::currentDate());
 }
 
 QString MainWindow::generateJsFunction(const SElementId & elem)
@@ -353,36 +350,6 @@ void MainWindow::slotComboIndexChanged(int index)
     qDebug() << "---------- Combo index changed, index: " << index;
 }
 
-// checkout:
-// https://stackoverflow.com/questions/36680604/qwebenginepage-tohtml-returns-an-empty-string
-void MainWindow::on_pushButton_clicked()
-{
-    QDate date(2017, 8, 13);
-    int secOffset = ui->m_hours->text().toInt() * 3600 + ui->m_minutes->text().toInt() * 60;
-    auto item = new CProjectListItem(secOffset, date,
-                                     ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
-                                     ui->m_comment->toPlainText(), ui->listWidget);
-    ui->listWidget->addItem(item);
-}
-
-void MainWindow::on_m_pbSubmit_clicked()
-{
-    // temp, set time/comment
-    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtDurationHours').value = '%1'").arg("1"));
-    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtDurationMinutes').value = '%1'").arg("0"));
-    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtComment').value = '%1'").arg(ui->m_comment->toPlainText()));
-
-    // temp, set date
-    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_dtDate_dtDateDate').value = '%1'").arg("4/13/2018"));
-//    m_page.runJavaScript("WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(\"ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$Button1\", \"\", true, \"\", \"\", false, false))",
-//                         invoke(this, &MainWindow::jsToday));
-//    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_Button1').click();"));
-
-    // submit form
-//    m_page.runJavaScript(jsSubmitTemplate, invoke(this, &MainWindow::jsSubmit));
-    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_btnAddTimeRecord').click();"));
-}
-
 void MainWindow::on_m_getList_clicked()
 {
     //    QString url("http://help.websiteos.com/websiteos/example_of_a_simple_html_page.htm");
@@ -390,4 +357,38 @@ void MainWindow::on_m_getList_clicked()
     //    QString url("file:///home/ilukic/projects/web/tctmweb/viatimroot/default.aspx.html");
     //    QString url("file:///home/ilukic/projects/web/Home%20-%20ViaTim/1/Home%20-%20ViaTim.html");
         m_page.load(QUrl(url));
+}
+
+void MainWindow::on_m_today_clicked()
+{
+    ui->m_date->setDate(QDate::currentDate());
+}
+
+// checkout:
+// https://stackoverflow.com/questions/36680604/qwebenginepage-tohtml-returns-an-empty-string
+void MainWindow::on_m_addPrj_clicked()
+{
+    int secOffset = ui->m_hours->text().toInt() * 3600 + ui->m_minutes->text().toInt() * 60;
+    auto item = new CProjectListItem(secOffset, ui->m_date->date(),
+                                     ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
+                                     ui->m_comment->toPlainText(), ui->listWidget);
+    ui->listWidget->addItem(item);
+}
+
+void MainWindow::on_m_submit_clicked()
+{
+    // temp, set time/comment
+    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtDurationHours').value = '%1'").arg(ui->m_hours->text()));
+    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtDurationMinutes').value = '%1'").arg(ui->m_minutes->text()));
+    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtComment').value = '%1'").arg(ui->m_comment->toPlainText()));
+
+    // temp, set date
+    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_dtDate_dtDateDate').value = '%1'").arg(ui->m_date->date().toString("d/M/yyyy")));
+//    m_page.runJavaScript("WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(\"ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$Button1\", \"\", true, \"\", \"\", false, false))",
+//                         invoke(this, &MainWindow::jsToday));
+//    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_Button1').click();"));
+
+    // submit form
+//    m_page.runJavaScript(jsSubmitTemplate, invoke(this, &MainWindow::jsSubmit));
+    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_btnAddTimeRecord').click();"));
 }
