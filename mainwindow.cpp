@@ -408,8 +408,6 @@ void MainWindow::secCnt()
     {
         auto i = static_cast<CProjectListItem*>(item);
         i->setSecCnt(i->getSecCnt() + 1);
-        qDebug() << "selected: sec++";
+        i->updateTitle();
     }
-
-    qDebug() << "1 sec";
 }

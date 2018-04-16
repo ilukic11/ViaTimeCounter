@@ -1,13 +1,13 @@
 #include "cprojectlistitem.h"
 
-#define MS_PER_MIN (60 * 1000)
-#define MS_PER_HOU (60 * MS_PER_MIN)
-//#define TIME_ELAPSED(time)                                                \
-//    (QString("%1:%2:%3")                                                  \
-//    .arg(time.elapsed() / MS_PER_HOU, 2, 10, QChar('0'))                  \
-//    .arg((time.elapsed() %  MS_PER_HOU) / MS_PER_MIN, 2, 10, QChar('0'))  \
-//    .arg((time.elapsed() %  MS_PER_MIN) / 1000, 2, 10, QChar('0'))        \
-//    )
+#define SEC_PER_MIN (60)
+#define SEC_PER_HOU (60 * SEC_PER_MIN)
+#define TIME_ELAPSED(elapsed)                                       \
+    (QString("%1:%2:%3")                                            \
+    .arg(elapsed / SEC_PER_HOU, 2, 10, QChar('0'))                  \
+    .arg((elapsed % SEC_PER_HOU) / SEC_PER_MIN, 2, 10, QChar('0'))  \
+    .arg((elapsed % SEC_PER_MIN), 2, 10, QChar('0'))                \
+    )
 
 CProjectListItem::CProjectListItem(int secOff, QDate date, QString projGrp, QString projName, QString projTheme, QString projTopic, QString comment, QListWidget* parent) :
     QListWidgetItem("", parent),
@@ -20,7 +20,7 @@ CProjectListItem::CProjectListItem(int secOff, QDate date, QString projGrp, QStr
     m_comment(comment)
 {
     // account for offset when using elapsed time
-    this->setText(getUpdatedTitle());
+    setText(getUpdatedTitle());
 }
 
 QTime CProjectListItem::getTime() const
@@ -96,7 +96,7 @@ void CProjectListItem::setComment(const QString &comment)
 
 QString CProjectListItem::getUpdatedTitle() const
 {
-    return QString(m_comment + " >> (" + /*TIME_ELAPSED(time) +*/ ")");
+    return QString(m_comment + " >> (" + TIME_ELAPSED(m_secCnt) + ")");
 }
 
 int CProjectListItem::getSecCnt() const
@@ -107,4 +107,9 @@ int CProjectListItem::getSecCnt() const
 void CProjectListItem::setSecCnt(int secCnt)
 {
     m_secCnt = secCnt;
+}
+
+void CProjectListItem::updateTitle()
+{
+    setText(getUpdatedTitle());
 }

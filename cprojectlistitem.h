@@ -34,6 +34,8 @@ public:
     int getSecCnt() const;
     void setSecCnt(int secCnt);
 
+    void updateTitle();
+
 private:
     QString getUpdatedTitle() const;
 
