@@ -124,6 +124,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->m_activitiesCombo, SIGNAL(activated(int)), this, SLOT(slotComboIndexChangedActivity(int)));
 
     ui->m_date->setDate(QDate::currentDate());
+
+    // timer - 1s
+    m_cntTimer.setInterval(1000);
+    // connect timer
+    QObject::connect(&m_cntTimer, &QTimer::timeout, this, &MainWindow::secCnt);
+    // call start
+    QTimer::singleShot(0,
+                       [this] { m_cntTimer.start(); });
 }
 
 
@@ -391,4 +399,9 @@ void MainWindow::on_m_submit_clicked()
     // submit form
 //    m_page.runJavaScript(jsSubmitTemplate, invoke(this, &MainWindow::jsSubmit));
     m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_btnAddTimeRecord').click();"));
+}
+
+void MainWindow::secCnt()
+{
+    qDebug() << "1 sec";
 }

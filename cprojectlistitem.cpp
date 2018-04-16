@@ -19,14 +19,6 @@ CProjectListItem::CProjectListItem(int secOff, QDate date, QString projGrp, QStr
     m_topic(projTopic),
     m_comment(comment)
 {
-    // 1s
-    m_cntTimer.setInterval(1000);
-    // connect timer
-    connnect(&m_cntTimer, &QTimer::timeout, this, &CProjectListItem::secCnt);
-    // call start
-    QTimer::singleShot(0,
-                       [this] { m_cntTimer.start(); });
-
     // account for offset when using elapsed time
     this->setText(getUpdatedTitle());
 }
@@ -105,9 +97,4 @@ void CProjectListItem::setComment(const QString &comment)
 QString CProjectListItem::getUpdatedTitle() const
 {
     return QString(m_comment + " >> (" + /*TIME_ELAPSED(time) +*/ ")");
-}
-
-void CProjectListItem::secCnt()
-{
-    qDebug() << "1 sec";
 }

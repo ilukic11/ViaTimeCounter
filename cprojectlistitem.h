@@ -4,7 +4,6 @@
 #include <QListWidgetItem>
 #include <QTime>
 #include <QDate>
-#include <QTimer>
 
 class CProjectListItem : public QListWidgetItem
 {
@@ -32,13 +31,8 @@ public:
     QString getComment() const;
     void setComment(const QString &comment);
 
-protected slots:
-    void secCnt();
-
 private:
     QString getUpdatedTitle() const;
-
-
 
     int m_secOff;
     QTime m_time;
@@ -48,8 +42,6 @@ private:
     QString m_theme;
     QString m_topic;
     QString m_comment;
-
-    QTimer m_cntTimer;
 };
 
 #endif // CLISTITEM_H

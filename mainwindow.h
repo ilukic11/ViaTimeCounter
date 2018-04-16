@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QWebEnginePage>
+#include <QTimer>
 
 struct SElementId;
 
@@ -26,6 +27,8 @@ private slots:
     void on_m_addPrj_clicked();
 
     void on_m_submit_clicked();
+
+    void secCnt();
 
 protected:
     void htmlReader(QString html);
@@ -78,6 +81,8 @@ private:
     static const QMap<QString, SElementId> s_lists;
     static QString s_username;
     static QString s_password;
+
+    QTimer m_cntTimer;
 };
 
 #endif // MAINWINDOW_H
