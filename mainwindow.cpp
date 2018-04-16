@@ -245,16 +245,6 @@ void MainWindow::jsCallbackSelectActivity(const QVariant &v)
     // now parse the result
 }
 
-void MainWindow::jsSubmit(const QVariant &v)
-{
-    qDebug() << "Return from submit...";
-}
-
-void MainWindow::jsToday(const QVariant &v)
-{
-    qDebug() << "Return from today...";
-}
-
 // to parse HTML list, check:
 // http://www.qtcentre.org/threads/65044-Get-Html-element-value-with-QWebEngine
 void MainWindow::htmlReader(QString html)
@@ -377,10 +367,13 @@ void MainWindow::on_m_today_clicked()
 void MainWindow::on_m_addPrj_clicked()
 {
     int secOffset = ui->m_hours->text().toInt() * 3600 + ui->m_minutes->text().toInt() * 60;
-    auto item = new CProjectListItem(secOffset, ui->m_date->date(),
+    auto item = new CProjectTableItem(secOffset, ui->m_date->date(),
                                      ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
-                                     ui->m_comment->toPlainText(), ui->listWidget);
-    ui->listWidget->addItem(item);
+                                     ui->m_comment->toPlainText(), ui->m_tableWidget);
+    ui->m_tableWidget->setItem(ui->m_tableWidget->rowCount(), 0, item);
+    auto time = new QTableWidgetItem;
+    time->setText("00:00:00");
+    ui->m_tableWidget->setItem(ui->m_tableWidget->rowCount(), 1, time);
 }
 
 void MainWindow::on_m_submit_clicked()
@@ -403,10 +396,10 @@ void MainWindow::on_m_submit_clicked()
 
 void MainWindow::secCnt()
 {
-    auto items = ui->listWidget->selectedItems();
+    auto items = ui->m_tableWidget->selectedItems();
     for (auto item : items)
     {
-        auto i = static_cast<CProjectListItem*>(item);
+        auto i = static_cast<CProjectTableItem*>(item);
         i->setSecCnt(i->getSecCnt() + 1);
         i->updateTitle();
     }

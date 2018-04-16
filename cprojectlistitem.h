@@ -1,14 +1,14 @@
 #ifndef CLISTITEM_H
 #define CLISTITEM_H
 
-#include <QListWidgetItem>
+#include <QTableWidgetItem>
 #include <QTime>
 #include <QDate>
 
-class CProjectListItem : public QListWidgetItem
+class CProjectTableItem : public QTableWidgetItem
 {
 public:
-    CProjectListItem(int secOff, QDate date, QString projGrp, QString projName, QString projTheme, QString projTopic, QString comment, QListWidget* parent);
+    CProjectTableItem(int secOff, QDate date, QString projGrp, QString projName, QString projTheme, QString projTopic, QString comment, QTableWidget* parent);
 
     QTime getTime() const;
     void setTime(const QTime &time);
