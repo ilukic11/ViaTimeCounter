@@ -403,5 +403,13 @@ void MainWindow::on_m_submit_clicked()
 
 void MainWindow::secCnt()
 {
+    auto items = ui->listWidget->selectedItems();
+    for (auto item : items)
+    {
+        auto i = static_cast<CProjectListItem*>(item);
+        i->setSecCnt(i->getSecCnt() + 1);
+        qDebug() << "selected: sec++";
+    }
+
     qDebug() << "1 sec";
 }

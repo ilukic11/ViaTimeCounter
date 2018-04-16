@@ -11,7 +11,7 @@
 
 CProjectListItem::CProjectListItem(int secOff, QDate date, QString projGrp, QString projName, QString projTheme, QString projTopic, QString comment, QListWidget* parent) :
     QListWidgetItem("", parent),
-    m_secOff(secOff),
+    m_secCnt(secOff),
     m_date(date),
     m_group(projGrp),
     m_name(projName),
@@ -97,4 +97,14 @@ void CProjectListItem::setComment(const QString &comment)
 QString CProjectListItem::getUpdatedTitle() const
 {
     return QString(m_comment + " >> (" + /*TIME_ELAPSED(time) +*/ ")");
+}
+
+int CProjectListItem::getSecCnt() const
+{
+    return m_secCnt;
+}
+
+void CProjectListItem::setSecCnt(int secCnt)
+{
+    m_secCnt = secCnt;
 }

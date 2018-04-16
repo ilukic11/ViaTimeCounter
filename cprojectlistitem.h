@@ -31,10 +31,13 @@ public:
     QString getComment() const;
     void setComment(const QString &comment);
 
+    int getSecCnt() const;
+    void setSecCnt(int secCnt);
+
 private:
     QString getUpdatedTitle() const;
 
-    int m_secOff;
+    int m_secCnt;
     QTime m_time;
     QDate m_date;
     QString m_group;
