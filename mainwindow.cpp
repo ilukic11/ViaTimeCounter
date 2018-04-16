@@ -132,6 +132,10 @@ MainWindow::MainWindow(QWidget *parent) :
     // call start
     QTimer::singleShot(0,
                        [this] { m_cntTimer.start(); });
+
+    ui->m_tableWidget->setColumnCount(2);
+    ui->m_tableWidget->setHorizontalHeaderLabels(QStringList() << "Comment" << "Elapsed");
+    ui->m_tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 
@@ -370,6 +374,7 @@ void MainWindow::on_m_addPrj_clicked()
     auto item = new CProjectTableItem(secOffset, ui->m_date->date(),
                                      ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
                                      ui->m_comment->toPlainText(), ui->m_tableWidget);
+    item->updateTitle();
     ui->m_tableWidget->setItem(ui->m_tableWidget->rowCount(), 0, item);
     auto time = new QTableWidgetItem;
     time->setText("00:00:00");
