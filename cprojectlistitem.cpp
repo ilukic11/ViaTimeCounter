@@ -96,7 +96,7 @@ void CProjectTableItem::setComment(const QString &comment)
 
 QString CProjectTableItem::getUpdatedTitle() const
 {
-    return QString(m_comment + " >> (" + TIME_ELAPSED(m_secCnt) + ")");
+    return QString(m_comment);
 }
 
 int CProjectTableItem::getSecCnt() const

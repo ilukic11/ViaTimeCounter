@@ -375,10 +375,14 @@ void MainWindow::on_m_addPrj_clicked()
                                      ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
                                      ui->m_comment->toPlainText(), ui->m_tableWidget);
     item->updateTitle();
-    ui->m_tableWidget->setItem(ui->m_tableWidget->rowCount(), 0, item);
     auto time = new QTableWidgetItem;
     time->setText("00:00:00");
-    ui->m_tableWidget->setItem(ui->m_tableWidget->rowCount(), 1, time);
+
+    // insert items in a table
+    auto rowCnt = ui->m_tableWidget->rowCount();
+    ui->m_tableWidget->insertRow(rowCnt);
+    ui->m_tableWidget->setItem(rowCnt, 0, item);
+    ui->m_tableWidget->setItem(rowCnt, 1, time);
 }
 
 void MainWindow::on_m_submit_clicked()
