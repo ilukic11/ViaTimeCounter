@@ -30,6 +30,8 @@ private slots:
 
     void secCnt();
 
+    void on_m_tableWidget_cellDoubleClicked(int row, int column);
+
 protected:
     void htmlReader(QString html);
 

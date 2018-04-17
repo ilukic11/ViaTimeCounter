@@ -114,6 +114,16 @@ QString CProjectTableItem::getElapsedAsString() const
     return TIME_ELAPSED(m_secCnt);
 }
 
+int CProjectTableItem::getHours() const
+{
+    return m_secCnt / SEC_PER_HOU;
+}
+
+int CProjectTableItem::getMinutes() const
+{
+    return (m_secCnt % SEC_PER_HOU) / SEC_PER_MIN;
+}
+
 void CProjectTableItem::updateTitle()
 {
     setText(getUpdatedTitle());

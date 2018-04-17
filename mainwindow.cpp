@@ -377,7 +377,9 @@ void MainWindow::on_m_addPrj_clicked()
     auto item = new CProjectTableItem(secOffset, ui->m_date->date(),
                                      ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
                                      ui->m_comment->toPlainText(), ui->m_tableWidget);
+    item->setFlags(item->flags() & ~Qt::ItemIsEditable);
     auto time = new QTableWidgetItem;
+    time->setFlags(time->flags() & ~Qt::ItemIsEditable);
     time->setText(item->getElapsedAsString());
 
     // insert items in a table
@@ -429,4 +431,13 @@ void MainWindow::secCnt()
         }
         prjItem = !prjItem;
     }
+}
+
+void MainWindow::on_m_tableWidget_cellDoubleClicked(int row, int column)
+{
+    auto item = static_cast<CProjectTableItem *>(ui->m_tableWidget->item(row, 0));
+    ui->m_comment->setPlainText(item->getComment());
+    ui->m_date->setDate(item->getDate());
+    ui->m_hours->setText(QString::number(item->getHours()));
+    ui->m_minutes->setText(QString::number(item->getMinutes()));
 }

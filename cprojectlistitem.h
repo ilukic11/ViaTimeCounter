@@ -35,6 +35,9 @@ public:
     void setSecCnt(int secCnt);
     QString getElapsedAsString() const;
 
+    int getHours() const;
+    int getMinutes() const;
+
     void updateTitle();
 
 private:
