@@ -109,6 +109,11 @@ void CProjectTableItem::setSecCnt(int secCnt)
     m_secCnt = secCnt;
 }
 
+QString CProjectTableItem::getElapsedAsString() const
+{
+    return TIME_ELAPSED(m_secCnt);
+}
+
 void CProjectTableItem::updateTitle()
 {
     setText(getUpdatedTitle());

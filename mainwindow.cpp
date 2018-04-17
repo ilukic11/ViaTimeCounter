@@ -136,6 +136,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->m_tableWidget->setColumnCount(2);
     ui->m_tableWidget->setHorizontalHeaderLabels(QStringList() << "Comment" << "Elapsed");
     ui->m_tableWidget->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->m_tableWidget->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->m_tableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    ui->m_tableWidget->verticalHeader()->resizeSections(QHeaderView::ResizeToContents);
 }
 
 
@@ -374,9 +377,8 @@ void MainWindow::on_m_addPrj_clicked()
     auto item = new CProjectTableItem(secOffset, ui->m_date->date(),
                                      ui->m_costlistCombo->currentText(), ui->m_projectsCombo->currentText(), ui->m_subProjectsCombo->currentText(), ui->m_activitiesCombo->currentText(),
                                      ui->m_comment->toPlainText(), ui->m_tableWidget);
-    item->updateTitle();
     auto time = new QTableWidgetItem;
-    time->setText("00:00:00");
+    time->setText(item->getElapsedAsString());
 
     // insert items in a table
     auto rowCnt = ui->m_tableWidget->rowCount();
@@ -393,7 +395,7 @@ void MainWindow::on_m_submit_clicked()
     m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_txtComment').value = '%1'").arg(ui->m_comment->toPlainText()));
 
     // temp, set date
-    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_dtDate_dtDateDate').value = '%1'").arg(ui->m_date->date().toString("d/M/yyyy")));
+    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_dtDate_dtDateDate').value = '%1'").arg(ui->m_date->date().toString("M/d/yyyy")));
 //    m_page.runJavaScript("WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(\"ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$Button1\", \"\", true, \"\", \"\", false, false))",
 //                         invoke(this, &MainWindow::jsToday));
 //    m_page.runJavaScript(QString("document.getElementById('ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_Button1').click();"));
@@ -406,10 +408,25 @@ void MainWindow::on_m_submit_clicked()
 void MainWindow::secCnt()
 {
     auto items = ui->m_tableWidget->selectedItems();
+    bool prjItem = true;
+    QString timeAsString;
     for (auto item : items)
     {
-        auto i = static_cast<CProjectTableItem*>(item);
-        i->setSecCnt(i->getSecCnt() + 1);
-        i->updateTitle();
+        // every second is CProjectTableItem
+        if (prjItem)
+        {
+            // get item and cast
+            auto i = static_cast<CProjectTableItem*>(item);
+            auto timeCnt = i->getSecCnt();
+            i->setSecCnt(timeCnt + 1);
+            // get the time and use it in next iteration to update
+            timeAsString = i->getElapsedAsString();
+        }
+        else
+        {
+            // time item to be updated with previous count
+            item->setText(timeAsString);
+        }
+        prjItem = !prjItem;
     }
 }

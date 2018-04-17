@@ -33,6 +33,7 @@ public:
 
     int getSecCnt() const;
     void setSecCnt(int secCnt);
+    QString getElapsedAsString() const;
 
     void updateTitle();
 
