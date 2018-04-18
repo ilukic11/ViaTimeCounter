@@ -52,6 +52,10 @@ const QString jsTemplate = QStringLiteral("function myFunction()"
                                           "myFunction();"
                                          );
 
+// costlist:select
+// <option selected="selected" value="14bb160c-bf35-431f-afda-56dc5ee64b19">ERT R&D</option>
+// onchange="javascript:setTimeout('__doPostBack(\'ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$drpCostList\',\'\')', 0)"
+
 // project::select
 // <option selected="selected" value="49adc4ee-8f9f-4e3f-84da-92c49baf09a8">AMOS Adaptations CT</option>
 // onchange="javascript:setTimeout('__doPostBack(\'ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$lstProjects\',\'\')', 0)"
@@ -94,7 +98,7 @@ typedef struct SElementId
 } SElementId;
 
 const QMap<QString, SElementId> MainWindow::s_lists = {
-    {"costlist", SElementId("ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_drpCostList", "")},
+    {"costlist", SElementId("ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_drpCostList", "ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$drpCostList")},
     {"project", SElementId("ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstProjects", "ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$lstProjects")},
     {"subProject", SElementId("ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstSubProjects", "ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$lstSubProjects")},
     {"activity", SElementId("ctl00_m_g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d_ctl00_lstActivities", "ctl00$m$g_9b5aac03_6991_48c4_bdd4_9bf8d083a73d$ctl00$lstActivities")},
@@ -232,19 +236,19 @@ void MainWindow::jsCallbackSelectCostlist(const QVariant &v)
 {
     // now parse the result
 //    m_page.runJavaScript(generateJsFunction(s_lists["costlist"]), invoke(this, &MainWindow::jsCallbackCostlist));
-    m_page.runJavaScript(generateJsFunction(s_lists["project"]), invoke(this, &MainWindow::jsCallbackProject));
+//    m_page.runJavaScript(generateJsFunction(s_lists["project"]), invoke(this, &MainWindow::jsCallbackProject));
 }
 
 void MainWindow::jsCallbackSelectProject(const QVariant &v)
 {
     // now parse the result
-    m_page.runJavaScript(generateJsFunction(s_lists["subProject"]), invoke(this, &MainWindow::jsCallbackSubProject));
+//    m_page.runJavaScript(generateJsFunction(s_lists["subProject"]), invoke(this, &MainWindow::jsCallbackSubProject));
 }
 
 void MainWindow::jsCallbackSelectSubProject(const QVariant &v)
 {
     // now parse the result
-    m_page.runJavaScript(generateJsFunction(s_lists["activity"]), invoke(this, &MainWindow::jsCallbackActivity));
+//    m_page.runJavaScript(generateJsFunction(s_lists["activity"]), invoke(this, &MainWindow::jsCallbackActivity));
 }
 
 void MainWindow::jsCallbackSelectActivity(const QVariant &v)
@@ -281,6 +285,9 @@ void MainWindow::htmlReader(QString html)
 //    m_page.runJavaScript(generateJsFunction(s_lists["subProject"]), invoke(this, &MainWindow::jsCallbackSubProject));
 //    m_page.runJavaScript(generateJsFunction(s_lists["activity"]), invoke(this, &MainWindow::jsCallbackActivity));
     m_page.runJavaScript(generateJsFunction(s_lists["costlist"]), invoke(this, &MainWindow::jsCallbackCostlist));
+    m_page.runJavaScript(generateJsFunction(s_lists["project"]), invoke(this, &MainWindow::jsCallbackProject));
+    m_page.runJavaScript(generateJsFunction(s_lists["subProject"]), invoke(this, &MainWindow::jsCallbackSubProject));
+    m_page.runJavaScript(generateJsFunction(s_lists["activity"]), invoke(this, &MainWindow::jsCallbackActivity));
 
 
 //    auto children = m_page.children();
